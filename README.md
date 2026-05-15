@@ -1,98 +1,92 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# TNE Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+API REST desarrollada con NestJS para el sistema de autenticación TNE.
+Maneja registro de usuarios, login con JWT y control de roles.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Tecnologías
+- NestJS
+- TypeORM
+- PostgreSQL
+- JWT (JSON Web Tokens)
+- bcrypt
+- Docker
 
-## Description
+## Requisitos previos
+- Node.js v20 o superior
+- npm
+- Docker Desktop (para la base de datos)
+- Repositorio `tne-database` corriendo
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Instalación
 
-## Project setup
+1. Clona el repositorio:
+git clone https://github.com/TU_USUARIO/tne-backend.git
+cd tne-backend
 
-```bash
-$ npm install
-```
+2. Instala las dependencias:
+npm install
 
-## Compile and run the project
+3. Copia el archivo de variables de entorno:
+copy .env.example .env
 
-```bash
-# development
-$ npm run start
+4. Asegúrate de que el servicio de base de datos esté corriendo:
+cd ../tne-database
+docker compose up -d
 
-# watch mode
-$ npm run start:dev
+## Variables de entorno
 
-# production mode
-$ npm run start:prod
-```
+| Variable | Descripción | Valor por defecto |
+|----------|-------------|-------------------|
+| PORT | Puerto del servidor | 3000 |
+| NODE_ENV | Ambiente de ejecución | development |
+| DB_HOST | Host de la base de datos | localhost |
+| DB_PORT | Puerto de la base de datos | 5432 |
+| DB_USER | Usuario de la base de datos | tne_user |
+| DB_PASSWORD | Contraseña de la base de datos | tne_password |
+| DB_NAME | Nombre de la base de datos | tne_db |
+| JWT_SECRET | Clave secreta para JWT | supersecretkey123 |
+| JWT_EXPIRES_IN | Expiración del token | 1d |
 
-## Run tests
+## Correr en desarrollo
 
-```bash
-# unit tests
-$ npm run test
+npm run start:dev
 
-# e2e tests
-$ npm run test:e2e
+El servidor estará disponible en: http://localhost:3000
 
-# test coverage
-$ npm run test:cov
-```
+## Endpoints
 
-## Deployment
+### Registro
+POST /api/auth/register
+Content-Type: application/json
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+{
+  "name": "Juan Pérez",
+  "email": "juan@email.com",
+  "password": "12345678",
+  "password_confirmation": "12345678"
+}
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### Login
+POST /api/auth/login
+Content-Type: application/json
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
+{
+  "email": "admin@tne.com",
+  "password": "password"
+}
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### Perfil autenticado
+GET /api/auth/me
+Authorization: Bearer TOKEN
 
-## Resources
+## Usuario administrador de prueba
 
-Check out a few resources that may come in handy when working with NestJS:
+| Campo | Valor |
+|-------|-------|
+| Email | admin@tne.com |
+| Password | password |
+| Rol | admin |
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+## Correr con Docker
 
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+docker compose up -d
