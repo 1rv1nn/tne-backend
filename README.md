@@ -19,17 +19,17 @@ Maneja registro de usuarios, login con JWT y control de roles.
 
 ## Instalación
 
-1. Clona el repositorio:
-git clone https://github.com/TU_USUARIO/tne-backend.git
+1. Clona este repositorio:
+git clone https://github.com/1rv1nn/tne-backend.git
 cd tne-backend
 
-2. Instala las dependencias:
+1. Instala las dependencias:
 npm install
 
-3. Copia el archivo de variables de entorno:
+1. Copia el archivo de variables de entorno:
 copy .env.example .env
 
-4. Asegúrate de que el servicio de base de datos esté corriendo:
+1. Asegúrate de que el servicio de base de datos esté corriendo:
 cd ../tne-database
 docker compose up -d
 
